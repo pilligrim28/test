@@ -1,10 +1,10 @@
 @startuml
 skinparam{
-Maxessagesize 200
+    Maxessagesize 200
 }
 skinparam sequence{
-ParticipantPadding 30
-MessageAlign center
+    ParticipantPadding 30
+    MessageAlign center
 }
 title "Тестовое задние 1"
 Actor "Пользователь" as User  #green
