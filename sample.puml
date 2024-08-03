@@ -1,0 +1,60 @@
+@startuml
+skinparam{
+Maxessagesize 200
+}
+skinparam sequence{
+ParticipantPadding 30
+MessageAlign center
+}
+title "Тестовое задние 1"
+Actor "Пользователь" as User  #green
+participant "Клиентское приложение такси" as Taxi
+participant "Сервер" as Server order 5
+participant "Клинтское приложение для водителей" as Driver order 30 #5f5
+database "База данных" as db order 10
+queue "WebSocket" as br order 20
+autonumber
+User -> Taxi: выбрать адрес начала и конец поездки
+Taxi -> Taxi: Отобразить, что заказ принят и обрабатывается
+Taxi -> Server: Рассчет стоимость и время поездки
+Server --> Taxi: Передача стоимости заказа
+
+Taxi-> Taxi: Отобразить окно об подтверждении заказа и выбор способа оплаты
+User -> Taxi: Потвердил заказ.
+Taxi -> Taxi: Отображение поиска машин
+Taxi-> Server: Поиск машины
+
+Server-> Server: Поиск подходящий машин
+
+
+Server -> br: Запрос на принятие заказа
+br --> Driver: Запросы водителям
+Driver-> Driver: Отображение заказа с кнопкой подтверждения или отклонения
+
+Driver --> br: Подверждение заказа
+br--x Driver: Разрыв соединения
+br--> Server: Передача подтверждения
+Server--x br: Разрыв соединения с WebSocket
+Server -> Server: Обновить  статус заказа
+Server-->Taxi: Передача статуса клиенту
+Taxi --> Taxi : Отображение: \n1.Имя водителя \n2.Марка и цвет машины \n3.Номер машины \n4.Время до прибытия
+Server --> br : Запрос на клинтское приложение для водителей о статусе
+
+Driver--> br: Отправка об подтверждении начала поездки
+br --> Server : Передача о смене статуса
+Server --x br : разрыв соединения с WebSocket
+Server --> Taxi : Передача о том что машина подъехала
+Taxi -> Taxi : Отображение смены статуса
+
+Server --> db: Записывает данные о поездке
+db ->Server: Передача информации о заказе
+Server --> Taxi : Отображение информации о заказе
+Server --> Driver: Отображение информации о заказе
+
+
+
+
+
+
+
+@enduml
