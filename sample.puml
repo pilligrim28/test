@@ -10,7 +10,7 @@ title "Тестовое задние 1"
 Actor "Пользователь" as User  #green
 participant "Клиентское приложение такси" as Taxi
 participant "Сервер" as Server order 5
-participant "Клинтское приложение для водителей" as Driver order 30 #5f5
+participant "Клиентское приложение для водителей" as Driver order 30 #5f5
 database "База данных" as db order 10
 queue "WebSocket" as br order 20
 autonumber
